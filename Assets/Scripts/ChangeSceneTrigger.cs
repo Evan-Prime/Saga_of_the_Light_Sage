@@ -5,6 +5,7 @@ using UnityEngine;
 public class ChangeSceneTrigger : MonoBehaviour
 {
     private LevelManager _levelManager;
+    private bool hasChanged = true;
     public string sceneName;
     public bool hasWon;
 
@@ -15,7 +16,17 @@ public class ChangeSceneTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        _levelManager.gameWin = hasWon;
+        _levelManager.sceneChange = hasChanged;
         _levelManager.LoadScene(sceneName);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (_levelManager.currentSceneName != sceneName)
+        {
+
+            _levelManager.canTransition = true;
+        }
+
     }
 }

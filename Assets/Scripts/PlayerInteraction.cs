@@ -31,12 +31,15 @@ public class PlayerInteraction : MonoBehaviour
             case InteractableObject.ObjectType.Dialogue:
                 interactableObjScript.Dialogue();
                 break;
+            case InteractableObject.ObjectType.Gate: 
+                interactableObjScript.Gate(); 
+                break;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Interactable") == true)
+        if (collision.CompareTag("Interactable") == true || collision.CompareTag("QuestNPC") == true || collision.CompareTag("QuestItem") == true)
         {
             currentInteractable = collision.gameObject;
             interactableObjScript = collision.GetComponent<InteractableObject>();
@@ -44,7 +47,7 @@ public class PlayerInteraction : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Interactable") == true)
+        if (collision.CompareTag("Interactable") == true || collision.CompareTag("QuestNPC") == true || collision.CompareTag("QuestItem") == true)
         {
             currentInteractable = null;
             interactableObjScript = null;

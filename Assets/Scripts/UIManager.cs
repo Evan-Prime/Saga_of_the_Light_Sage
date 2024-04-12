@@ -9,7 +9,6 @@ public class UIManager : MonoBehaviour
     public GameObject gameplayUI;
     public GameObject creditUI;
     public GameObject pausedUI;
-    public GameObject gameOverUI;
     public GameObject gameWinUI;
 
     public void UIMainManu()
@@ -18,7 +17,6 @@ public class UIManager : MonoBehaviour
         gameplayUI.SetActive(false);
         creditUI.SetActive(false);
         pausedUI.SetActive(false);
-        gameOverUI.SetActive(false);
         gameWinUI.SetActive(false);
     }
 
@@ -28,7 +26,6 @@ public class UIManager : MonoBehaviour
         gameplayUI.SetActive(true);
         creditUI.SetActive(false);
         pausedUI.SetActive(false);
-        gameOverUI.SetActive(false);
         gameWinUI.SetActive(false);
     }
 
@@ -38,7 +35,6 @@ public class UIManager : MonoBehaviour
         gameplayUI.SetActive(false);
         creditUI.SetActive(true);
         pausedUI.SetActive(false);
-        gameOverUI.SetActive(false);
         gameWinUI.SetActive(false);
     }
 
@@ -48,19 +44,9 @@ public class UIManager : MonoBehaviour
         gameplayUI.SetActive(false);
         creditUI.SetActive(false);
         pausedUI.SetActive(true);
-        gameOverUI.SetActive(false);
         gameWinUI.SetActive(false);
     }
-
-    public void UIGameOver()
-    {
-        mainMenuUI.SetActive(false);
-        gameplayUI.SetActive(false);
-        creditUI.SetActive(false);
-        pausedUI.SetActive(false);
-        gameOverUI.SetActive(true);
-        gameWinUI.SetActive(false);
-    }
+    
 
     public void UIGameWin()
     {
@@ -68,7 +54,6 @@ public class UIManager : MonoBehaviour
         gameplayUI.SetActive(false);
         creditUI.SetActive(false);
         pausedUI.SetActive(false);
-        gameOverUI.SetActive(false);
         gameWinUI.SetActive(true);
     }
 }

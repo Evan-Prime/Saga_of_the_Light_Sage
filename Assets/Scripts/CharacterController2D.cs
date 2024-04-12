@@ -53,4 +53,10 @@ public class CharacterController2D : MonoBehaviour
         _animator.SetFloat("Vertical", _moveInput.y);
         _animator.SetFloat("Speed", _movementSpeed);
     }
+
+    public void Freeze()
+    {
+        _movementSpeed = 0.0f;
+        HandleAnimation();
+    }
 }

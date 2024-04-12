@@ -7,7 +7,10 @@ using UnityEngine.Events;
 public class LevelManager : MonoBehaviour
 {
     private GameManager _gameManager;
-    public bool gameWin;
+    public bool sceneChange;
+    public string currentSceneName;
+    public string previousSceneName;
+    public bool canTransition = true;
 
     public void Awake()
     {
@@ -24,30 +27,42 @@ public class LevelManager : MonoBehaviour
             {
                 _gameManager.gameState = GameManager.GameState.MainMenu;
             }
-            if (sceneToLoad.StartsWith("Gameplay"))
+            if (sceneToLoad.EndsWith("Scene"))
             {
                 _gameManager.gameState = GameManager.GameState.Gameplay;
             }
             if (sceneToLoad == "GameEnd")
             {
-                if (gameWin == true)
-                {
-                    _gameManager.gameState = GameManager.GameState.GameWin;
-                }
-                else if (gameWin == false)
-                {
-                    _gameManager.gameState = GameManager.GameState.GameOver;
-                }
-                
+                _gameManager.gameState = GameManager.GameState.GameWin;
+
             }
         }
 
 
-        SceneManager.LoadScene(sceneToLoad);
+        if (canTransition == true)
+        {
+            previousSceneName = currentSceneName;
+            currentSceneName = sceneToLoad;
+            SceneManager.LoadScene(sceneToLoad);
+            canTransition = false;
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        _gameManager.MovePlayerToSpawnPosition();
+        if (sceneChange == false)
+        {
+            _gameManager.MovePlayerToSpawnPosition();
+            canTransition = true;
+        }
+        else if (sceneChange == true)
+        {
+            _gameManager.MovePlayerToTransitionPosition();
+        }
+    }
+
+    public void ResetLevel()
+    {
+        sceneChange = false;
     }
 }

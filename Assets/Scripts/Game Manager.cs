@@ -10,8 +10,12 @@ public class GameManager : MonoBehaviour
     private LevelManager _levelManager;
     private UIManager _uiManager;
     private CharacterController2D _characterController2D;
+    private ProgressBar _progressBar;
+    private InventorySystem _inventorySystem;
+    private QuestManager _questManager;
 
     public GameObject spawnPoint;
+    public GameObject[] transitionPoints;
     public GameObject player;
     public GameObject playerArt;
     public bool inDialogue;
@@ -33,6 +37,12 @@ public class GameManager : MonoBehaviour
         _uiManager = FindAnyObjectByType<UIManager>();
 
         _characterController2D = FindAnyObjectByType<CharacterController2D>();
+
+        _progressBar = FindAnyObjectByType<ProgressBar>();
+
+        _inventorySystem = FindAnyObjectByType<InventorySystem>();
+
+        _questManager = FindAnyObjectByType<QuestManager>();
     }
 
     private void Start()
@@ -56,7 +66,6 @@ public class GameManager : MonoBehaviour
             case GameState.Gameplay:    Gameplay(); break;
             case GameState.Credit:     Credit(); break;
             case GameState.Paused:      Paused(); break;
-            case GameState.GameOver:    GameOver(); break;
             case GameState.GameWin:     GameWin(); break;
         }
     }
@@ -64,6 +73,11 @@ public class GameManager : MonoBehaviour
     private void MainMenu()
     {
         Cursor.lockState = CursorLockMode.None;
+
+        _progressBar.ResetProgress();
+        _inventorySystem.ResetInventory();
+        _questManager.ResetQuests();
+        _levelManager.ResetLevel();
 
         playerArt.SetActive(false);
         _characterController2D.enabled = false;
@@ -76,10 +90,16 @@ public class GameManager : MonoBehaviour
         if (!inDialogue)
         {
             Cursor.lockState = CursorLockMode.Locked;
+            
+            _characterController2D.enabled = true;
+        }
+        else
+        {
+            _characterController2D.Freeze();
+            _characterController2D.enabled = false;
         }
 
         playerArt.SetActive(true);
-        _characterController2D.enabled = true;
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -117,16 +137,6 @@ public class GameManager : MonoBehaviour
         _uiManager.UIPaused();
     }
 
-    private void GameOver()
-    {
-        Cursor.lockState = CursorLockMode.None;
-
-        playerArt.SetActive(false);
-        _characterController2D.enabled = false;
-
-        _uiManager.UIGameOver();
-    }
-
     private void GameWin()
     {
         Cursor.lockState = CursorLockMode.None;
@@ -149,6 +159,18 @@ public class GameManager : MonoBehaviour
         spawnPoint = GameObject.FindGameObjectWithTag("SpawnPoint");
 
         player.transform.position = spawnPoint.transform.position;
+    }
+
+    public void MovePlayerToTransitionPosition()
+    {
+        transitionPoints = GameObject.FindGameObjectsWithTag("Transition");
+        foreach (GameObject transitionPoint in transitionPoints)
+        {
+            if (transitionPoint.GetComponent<ChangeSceneTrigger>().sceneName == _levelManager.previousSceneName)
+            {
+                player.transform.position = transitionPoint.transform.position;
+            }
+        }
     }
 
     public void ToCredits()

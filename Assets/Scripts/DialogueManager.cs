@@ -9,21 +9,25 @@ public class DialogueManager : MonoBehaviour
     private CharacterController2D _characterController2D;
     private PlayerInteraction _playerInteraction;
     private GameManager _gameManager;
+    private LevelManager _levelManager;
+    private bool hasWon = false;
 
     public TMP_Text dialogueText;
     public GameObject dialogue;
 
     private void Start()
     {
+        _levelManager = FindAnyObjectByType<LevelManager>();
         _characterController2D = FindAnyObjectByType<CharacterController2D>();
         _playerInteraction = FindAnyObjectByType<PlayerInteraction>();
         _gameManager = GetComponentInParent<GameManager>();
         dialogue.SetActive(false);
     }
 
-    public void StartDialogue(List<string> dialogueList)
+    public void StartDialogue(List<string> dialogueList, bool hasWon)
     {
         _gameManager.inDialogue = true;
+        this.hasWon = hasWon;
         Cursor.lockState = CursorLockMode.None;
         _characterController2D.enabled = false;
         _playerInteraction.enabled = false;
@@ -52,5 +56,10 @@ public class DialogueManager : MonoBehaviour
         _characterController2D.enabled = true;
         _playerInteraction.enabled = true;
         dialogue.SetActive(false);
+        if (hasWon == true)
+        {
+            _levelManager.sceneChange = false;
+            _levelManager.LoadScene("GameEnd");
+        }
     }
 }
