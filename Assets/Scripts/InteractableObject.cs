@@ -58,7 +58,10 @@ public class InteractableObject : MonoBehaviour
     {
         Interactable.gameObject.SetActive(false);
         _inventorySystem.PickUpItem();
-        _questManager.NextQuestStep();
+        if (hasWon == false)
+        {
+            _questManager.NextQuestStep();
+        }
     }
 
     public void Dialogue()
@@ -67,17 +70,23 @@ public class InteractableObject : MonoBehaviour
         {
             case 0:
                 dManager.StartDialogue(dialogue1, hasWon);
-                _questManager.NextQuestStep();
-                _questManager.questItem.SetActive(true);
+                if (hasWon == false)
+                {
+                    _questManager.NextQuestStep();
+                    _questManager.questItem.SetActive(true);
+                }
                 break;
             case 1:
                 dManager.StartDialogue(dialogue2, hasWon);
                 break;
             case 2:
                 dManager.StartDialogue(dialogue3, hasWon);
-                _inventorySystem.TurnInItem();
-                _questManager.NextQuestStep();
-                _progressBar.ChargeGem();
+                if (hasWon == false)
+                {
+                    _inventorySystem.TurnInItem();
+                    _questManager.NextQuestStep();
+                    _progressBar.ChargeGem();
+                }
                 break;
             case 3:
                 dManager.StartDialogue(dialogue4, hasWon);

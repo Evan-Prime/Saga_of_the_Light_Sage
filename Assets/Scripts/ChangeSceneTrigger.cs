@@ -7,7 +7,6 @@ public class ChangeSceneTrigger : MonoBehaviour
     private LevelManager _levelManager;
     private bool hasChanged = true;
     public string sceneName;
-    public bool hasWon;
 
     private void Awake()
     {

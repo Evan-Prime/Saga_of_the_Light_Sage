@@ -141,6 +141,11 @@ public class GameManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
 
+        _progressBar.ResetProgress();
+        _inventorySystem.ResetInventory();
+        _questManager.ResetQuests();
+        _levelManager.ResetLevel();
+
         playerArt.SetActive(false);
         _characterController2D.enabled = false;
 
